@@ -1,62 +1,230 @@
-# Express.js RESTful API Assignment
+🛍️ Product API – Express.js Project
 
-This assignment focuses on building a RESTful API using Express.js, implementing proper routing, middleware, and error handling.
+🚀 Overview
 
-## Assignment Overview
+This project is a RESTful API built with Express.js. It allows users to manage product data — including creating, reading, updating, deleting, filtering, paginating, and searching products.
 
-You will:
-1. Set up an Express.js server
-2. Create RESTful API routes for a product resource
-3. Implement custom middleware for logging, authentication, and validation
-4. Add comprehensive error handling
-5. Develop advanced features like filtering, pagination, and search
+It demonstrates the use of:
 
-## Getting Started
+Routing and CRUD operations
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Install dependencies:
-   ```
-   npm install
-   ```
-4. Run the server:
-   ```
-   npm start
-   ```
+Middleware (logging, authentication, validation, error handling)
 
-## Files Included
+Advanced query features (filtering, search, pagination)
 
-- `Week2-Assignment.md`: Detailed assignment instructions
-- `server.js`: Starter Express.js server file
-- `.env.example`: Example environment variables file
 
-## Requirements
+📦 Project Structure
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Postman, Insomnia, or curl for API testing
+project/
+│
+├── server.js
+├── routes/
+│   └── productRoutes.js
+├── middleware/
+│   ├── logger.js
+│   ├── authMiddleware.js
+│   ├── validateProduct.js
+│   └── errorHandler.js
+├── controllers/
+│   └── productController.js
+├── models/
+│   └── productModel.js
+├── .env.example
+└── README.md
 
-## API Endpoints
 
-The API will have the following endpoints:
+⚙️ Setup Instructions
 
-- `GET /api/products`: Get all products
-- `GET /api/products/:id`: Get a specific product
-- `POST /api/products`: Create a new product
-- `PUT /api/products/:id`: Update a product
-- `DELETE /api/products/:id`: Delete a product
+1️⃣ Prerequisites
 
-## Submission
+Make sure you have Node.js (v18 or higher) and npm installed.
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+2️⃣ Install Dependencies
 
-1. Complete all the required API endpoints
-2. Implement the middleware and error handling
-3. Document your API in the README.md
-4. Include examples of requests and responses
+npm install express body-parser uuid dotenv
 
-## Resources
+3️⃣ Environment Variables
 
-- [Express.js Documentation](https://expressjs.com/)
-- [RESTful API Design Best Practices](https://restfulapi.net/)
-- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 
+Create a .env file (you can copy from .env.example) and include:
+
+PORT=3000
+API_KEY=your_api_key_here
+
+4️⃣ Run the Server
+
+node server.js
+
+Your API should start on:
+
+http://localhost:3000
+
+You’ll see a message like:
+
+Server running on port 3000...
+
+
+🧪 API Documentation
+
+Base URL
+
+http://localhost:3000/api/products
+
+
+1️⃣ GET /api/products
+
+Retrieve all products, with optional filtering, search, and pagination.
+
+Query Parameters
+
+Parameter	Type	Description
+
+category	string	Filter products by category
+search	string	Search by product name
+page	number	Page number for pagination
+limit	number	Items per page
+
+
+✅ Example Request
+
+GET /api/products?category=Electronics&page=1&limit=5
+
+✅ Example Response
+
+{
+  "status": "success",
+  "results": 2,
+  "data": {
+    "products": [
+      {
+        "id": "1",
+        "name": "Smartphone",
+        "price": 450,
+        "category": "Electronics",
+        "inStock": true
+      }
+    ]
+  }
+}
+
+
+2️⃣ GET /api/products/:id
+
+Retrieve a single product by its ID.
+
+✅ Example
+
+GET /api/products/1234
+
+✅ Response
+
+{
+  "id": "1234",
+  "name": "Smartphone",
+  "price": 450,
+  "category": "Electronics",
+  "inStock": true
+}
+
+
+3️⃣ POST /api/products
+
+Create a new product.
+🔐 Requires x-api-key header for authentication.
+
+✅ Headers
+
+x-api-key: your_api_key_here
+Content-Type: application/json
+
+✅ Body
+
+{
+  "name": "Laptop",
+  "description": "A high-performance laptop",
+  "price": 1200,
+  "category": "Electronics",
+  "inStock": true
+}
+
+✅ Response
+
+{
+  "status": "success",
+  "message": "Product created successfully",
+  "data": { ... }
+}
+
+
+4️⃣ PUT /api/products/:id
+
+Update an existing product.
+🔐 Requires x-api-key.
+
+✅ Example
+
+PUT /api/products/1234
+
+✅ Body
+
+{
+  "price": 1300,
+  "inStock": false
+}
+
+✅ Response
+
+{
+  "status": "success",
+  "message": "Product updated successfully",
+  "data": { ... }
+}
+
+
+5️⃣ DELETE /api/products/:id
+
+Delete a product by ID.
+🔐 Requires x-api-key.
+
+✅ Response
+
+{
+  "status": "success",
+  "message": "Product deleted successfully"
+}
+
+
+🧩 Middleware Implemented
+
+Middleware	Purpose
+
+logger.js	Logs request method, URL, and timestamp
+authMiddleware.js	Checks for API key in headers
+validateProduct.js	Validates product fields before creating/updating
+errorHandler.js	Handles errors globally with custom messages & status codes
+
+
+⚠️ Error Handling
+
+Error Type	Example	Status Code
+
+Validation Error	Missing name or price	400
+Not Found Error	Product not found	404
+Authentication Error	Missing/Invalid API key	401
+Server Error	Unexpected internal issue	500
+
+
+🧠 Advanced Features
+
+Filtering → /api/products?category=Electronics
+
+Search → /api/products?search=phone
+
+Pagination → /api/products?page=2&limit=5
+
+Statistics → /api/products/stats (count products by category)
+
+
+🧰 Example Environment File (.env.example)
+
+PORT=3000
+API_KEY=mysecretapikey
